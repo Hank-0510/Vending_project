@@ -15,6 +15,9 @@
       </el-form>
     </div>
     <div class="footer">
+      <i>每个合同是通过按钮点击查看的还是第三列的合同名称设计跳转，将合同放到服务器吗？</i>
+
+      <i>哒哒</i>
       <div class="table-wrap">
         <el-table :data="tableData" style="width: 100%" border row-key="id" class="table" empty-text="无对应内容">
           <el-table-column class="table-child" prop="serialNumber" label="编号" />

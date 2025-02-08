@@ -2,8 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/Home/index.vue'
 import LoginView from '../views/Login/index.vue'
 import DeviceManager from "@/views/DeviceManager/DeviceManager.vue";
-import OrderEmployer from "@/views/OrderManager/orderEmployer.vue";
-import OrderUser from "@/views/OrderManager/orderUser.vue";
+import OrderEmployer from "@/views/OrderManager/OrderEmployer.vue";
+import OrderUser from "@/views/OrderManager/OrderUser.vue";
+import contractSystem from "@/views/ContractSystem/ContractSystem.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
       path: '/orderUser',
       name: 'orderUser',
       component: OrderUser,
+    },
+    {
+      path: '/contract',
+      name: 'contractSystem',
+      component: contractSystem,
     },
   ]
 

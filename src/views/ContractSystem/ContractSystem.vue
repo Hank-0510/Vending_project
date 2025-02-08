@@ -6,7 +6,7 @@
         <!-- 搜索处 -->
         <div class="fiveSerach">
          
-          <el-input class="space input-field" v-model="formInline.orderSearch" placeholder="请输入搜索内容" />
+          <el-input class="space input-field" v-model="formInline.contractSearch" placeholder="请输入搜索内容" />
           <el-form-item class="operation">
             <el-button type="primary" @click="onSearch">查询</el-button>
             <el-button @click="reset(ruleFormRef)">重置</el-button>
@@ -18,21 +18,14 @@
       <div class="table-wrap">
         <el-table :data="tableData" style="width: 100%" border row-key="id" class="table" empty-text="无对应内容">
           <el-table-column class="table-child" prop="serialNumber" label="编号" />
-          <el-table-column class="table-child" prop="merchantName" label="商家名称" />
-          <el-table-column class="table-child" prop="orderNumber" label="订单编号" />
-          <el-table-column class="table-child" prop="deviceQuantity" label="购买设备数量" />
-          <el-table-column class="table-child" prop="totalPrice" label="订单总价" />
-          <el-table-column class="table-child" prop="paymentMethod" label="支付方式" />
-          <el-table-column class="table-child" prop="paymentStatus" label="支付状态" />
-          <el-table-column class="table-child" prop="machineNumber" label="机器编号" />
-          <el-table-column class="table-child" prop="cargoNumber" label="货物编号" />
-          <el-table-column class="table-child" prop="updateTime" label="更新时间" />
+          <el-table-column class="table-child" prop="contractNumber" label="合同编号" />
+          <el-table-column class="table-child" prop="contractContent" label="合同具体内容(PDF)" />
+          <el-table-column class="table-child" prop="contractParties" label="合同签订方" />
+          <el-table-column class="table-child" prop="contractSigningDate" label="合同签订日期" />
+          <el-table-column class="table-child" prop="contractExpiryDate" label="合同截至日期" />
           <el-table-column class="table-child" prop="creationTime" label="创建时间" />
-
-
           <el-table-column class="table-child" prop="status" label="操作">
             <template #default="scope">
-              <el-button type="primary" size="small" icon="Edit" @click="edit(scope.row)"> 编辑 </el-button>
               <el-button type="danger" size="small" icon="Delete" @click="del(scope.row)"> 删除 </el-button>
             </template>
           </el-table-column>
@@ -44,15 +37,14 @@
   </div>
 </template>
 <!--设备管理-->
-<script lang="ts" setup name="orderEmployee" >
+<script lang="ts" setup  >
   import { ElMessageBox,ElMessage } from 'element-plus'
   import type { FormInstance } from 'element-plus'
 import { ref, reactive } from 'vue'
 import { Search } from '@element-plus/icons-vue'
-import MenuDrawer from './components/employerMenuDrawer.vue'
-import { orderEmployerData } from '@/mock/orderEmployerData.ts'
+import { ContractData } from '@/mock/ContractData.ts'
 //表单数据来自mock
-const tableData = ref(orderEmployerData)
+const tableData = ref(ContractData)
 const menuDrawer = ref()
 const menuDrawerRef = ref()
 // const formInline = reactive({})
@@ -60,40 +52,32 @@ const ruleFormRef = ref<FormInstance>()
 // const reset = (formEl: FormInstance | undefined) => {}
 
 interface FormInline {
-  serialNumber: string;
-merchantName: string;
-orderNumber: string;
-deviceQuantity: string;
-totalPrice: string;
-paymentMethod: string;
-paymentStatus: string;
-updateTime: string;
-machineNumber: string;
-cargoNumber: string;
-creationTime: string;
-orderSearch:string
+  serialNumber:string
+contractNumber:string
+contractContent:string
+contractParties:string
+contractSigningDate:string
+contractExpiryDate:string
+creationTime:string
+contractSearch:string
  
 }
 
 const formInline = reactive<FormInline>({
-  serialNumber: '',
-merchantName: '',
-orderNumber: '',
-deviceQuantity: '',
-totalPrice: '',
-paymentMethod: '',
-paymentStatus: '',
-updateTime: '',
-machineNumber: '',
-cargoNumber: '',
-creationTime: '',
-orderSearch:''
+  serialNumber:'',
+contractNumber:'',
+contractContent:'',
+contractParties:'',
+contractSigningDate:'',
+contractExpiryDate:'',
+creationTime:'',
+contractSearch:''
 
 });
 
 const reset = (formEl: FormInstance | undefined) => {
   // 重置表单数据
-  formInline.orderSearch = '';
+  formInline.contractSearch = '';
  
 
   // 如果有表单实例对象，也可以调用表单的resetFields方法
@@ -102,7 +86,7 @@ const reset = (formEl: FormInstance | undefined) => {
   }
 
   // 重置table数据为初始数据
-  tableData.value = orderEmployerData;
+  tableData.value = ContractData;
 };
 
 
@@ -118,26 +102,16 @@ const onSearch = () => {
   //   (!formInline.deviceAddress || item.deviceAddress.includes(formInline.deviceAddress)) &&
   //   (!formInline.deviceRemark || item.deviceRemark.includes(formInline.deviceRemark))
   // );
-  const searchValue = formInline.orderSearch.trim().toLowerCase();
-  tableData.value = orderEmployerData.filter(item => 
+  const searchValue = formInline.contractSearch.trim().toLowerCase();
+  tableData.value = ContractData.filter(item => 
     // 判断输入框是否为空，且在表单的任何数据项中找到匹配
-    [item.serialNumber, item.merchantName, item.orderNumber, item.deviceQuantity,item.totalPrice,item.paymentMethod,item.machineNumber,item.cargoNumber]
+    [item.serialNumber, item.contractNumber, item.contractContent, item.contractParties, item.contractSigningDate, item.contractExpiryDate, item.creationTime]
       .some(field => field && field.toLowerCase().includes(searchValue))
   );
 
-};
+}
 
  
-
-  const edit = (row) => {
-    menuDrawerRef.value.show(row)
-    if (!row) {
-    console.error('Row data is missing');
-    return;
-  }
-    
-  }
-
   const del = (row: any) => {
   // 确认删除操作
   console.log('删除的 row:', row); // 确保 row 传递正确

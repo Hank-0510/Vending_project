@@ -39,6 +39,19 @@ const router = createRouter({
       name: 'contractSystem',
       component: contractSystem,
     },
+
+
+    {
+      path: '/usermanager',
+      name: 'usermanager',
+      component: () => import('@/views/UserManager/index.vue'),
+    },
+
+    {
+      path: '/chargemanager',
+      name: 'chargemanager',
+      component: () => import('@/views/ChargeManager/index.vue'),
+    },
   ]
 
   

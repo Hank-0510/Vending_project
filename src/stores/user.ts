@@ -58,8 +58,11 @@ export const useUserStore = defineStore('user', () => {
   
   // 判断用户是否已登录
   const isLoggedIn = () => {
-    console.log('登录状态:',!!token.value);
-    return !!token.value
+    // 检查内存中的token和localStorage中的token
+    const isMemoryToken = !!token.value
+    const isLocalToken = !!localStorage.getItem('token')
+    console.log('登录状态:', isMemoryToken || isLocalToken, '(内存token:', isMemoryToken, ', 本地token:', isLocalToken, ')');
+    return isMemoryToken || isLocalToken
   }
   
   // 获取用户角色

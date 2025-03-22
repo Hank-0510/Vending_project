@@ -43,11 +43,12 @@
     </div>
   </template>
   <script lang="ts" setup>
+    import { defineEmits } from 'vue'
+    const emit = defineEmits(['refresh'])
     import { reactive, ref } from 'vue'
     import { ElMessage } from 'element-plus'
     import type { FormInstance } from 'element-plus'
-    import { orderEmployerData } from '@/mock/orderEmployerData'
-    const tableData = ref(orderEmployerData)
+    import { updateOrder } from '@/api/orders'
     const ruleFormRef = ref<FormInstance>()
     const dialogVisible = ref()
     //表单校验规则
@@ -103,60 +104,41 @@ orderSearch:''
 
     }
 
-    const handleClose = async (done: () => void) => {
-      await ruleFormRef.value.validate((valid, fields) => {
+    const handleClose = async () => {
+      await ruleFormRef.value.validate(async (valid, fields) => {
         if (valid) {
-            const newDevice = { ...ruleForm } // 复制当前表单数据
-
-         // 获取当前时间，格式化为 "yyyy-MM-dd HH:mm:ss"
-         const currentTime = new Date().toLocaleString('zh-CN', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-             hour: '2-digit',
-           minute: '2-digit',
-           second: '2-digit',
-           hour12: false, // 24小时制
-         }).replace(/\//g, '-').replace(',', ''); // 将日期格式调整为 "yyyy-MM-dd HH:mm:ss"
-         newDevice.creationTime = currentTime; 
-
-            const lateobj={
-              boundQrCode: '',
-              orderCode: '',
-              boundPersonnel: '',
-              deviceAddress: '',
-              creationTime: currentTime,
-              remarks: '',
-              dispensingButton: '',
-              status: ''
-            }
-            if (title.value === '新增菜单') {
-        tableData.value.unshift(newDevice) // 直接插入到表格数据
-        ElMessage.success('添加成功')
-      }else if (title.value === '编辑') {
-        // 编辑设备时，根据 deviceNumber 更新对应设备
-        const index = tableData.value.findIndex(device => device.serialNumber === newDevice.serialNumber)
-        if (index !== -1) {
-          tableData.value[index] = newDevice // 更新对应的设备
-          ElMessage.success('编辑成功')
-        } 
-        else {
-          ElMessage.error('编辑错误')
-        }
-      }
-
-
-          
           dialogVisible.value = false
+          
+          try {
+            // 如果是编辑模式，调用API更新订单
+            if (title.value === '编辑') {
+              await updateOrder({
+                id: ruleForm.id,
+                // 转换前端字段到后端字段
+                user_id: ruleForm.merchantName.replace('User ', ''), // 从 "User X" 提取用户ID
+                machine_id: ruleForm.machineNumber.replace('MACH-', ''), // 从 "MACH-X" 提取机器ID
+                product_id: ruleForm.cargoNumber.replace('PROD-', ''), // 从 "PROD-X" 提取产品ID
+                quantity: Number(ruleForm.deviceQuantity),
+                total_price: Number(ruleForm.totalPrice),
+                status: ruleForm.paymentStatus
+              });
+              ElMessage.success('更新成功');
+              // 通知父组件刷新数据
+              emit('refresh');
+            } else {
+              // 新增功能暂不实现，因为API中没有提供
+              ElMessage.warning('新增功能暂未实现');
+            }
+          } catch (error) {
+            console.error('操作失败:', error);
+            ElMessage.error('操作失败');
+          }
 
-            console.log('submit!')
-
-
-
+          console.log('submit!');
         } else {
-          console.log('error submit!', fields)
+          console.log('error submit!', fields);
         }
-      })
+      });
     }
 
 

@@ -6,10 +6,42 @@ import { AxiosHeaders } from 'axios'
 
 // 创建 axios 实例
 const service = axios.create({
-  timeout: 10000,
+  timeout: 15000, // 增加超时时间到15秒
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Cache-Control': 'no-cache, no-store, must-revalidate', // 禁用缓存
+    'Pragma': 'no-cache',
+    'Expires': '0'
   }
+})
+
+// 添加请求重试功能
+service.interceptors.response.use(undefined, async (err) => {
+  const config = err.config;
+  
+  // 如果配置了重试选项且请求失败，进行重试
+  if (config && config.retry && config.retry > 0) {
+    config.__retryCount = config.__retryCount || 0;
+    
+    // 检查是否已经达到最大重试次数
+    if (config.__retryCount < config.retry) {
+      config.__retryCount += 1;
+      console.log(`[请求重试] 第 ${config.__retryCount}/${config.retry} 次重试请求: ${config.url}`);
+      
+      // 延迟指定时间后重试
+      const delayRetry = new Promise(resolve => {
+        setTimeout(() => {
+          console.log(`[请求重试] 延迟 ${config.retryDelay || 1000}ms 后重试`);
+          resolve(null);
+        }, config.retryDelay || 1000);
+      });
+      
+      await delayRetry;
+      return service(config);
+    }
+  }
+  
+  return Promise.reject(err);
 })
 
 // 不需要 token 的白名单接口列表
@@ -77,11 +109,24 @@ service.interceptors.response.use(
 
     const res = response.data
 
-    if (res.status !== 'success') {
-      const msg = res.message || '业务逻辑错误'
+
+    const isSuccess = res.success === true || res.status === 'success' || res.code === 200
+
+
+    if (!isSuccess) {
+      const msg = res.message?.trim() || '业务逻辑错误'
+      console.error('[业务错误]', msg, res)
       ElMessage.error(msg)
+
       return Promise.reject(new Error(msg))
     }
+    // if (res.status !== 'success') {
+    //   const msg = res.message || '业务逻辑错误'
+    //   ElMessage.error(msg)
+      
+    //   return Promise.reject(new Error(msg))
+      
+    // }
 
     return res
   },
@@ -103,14 +148,16 @@ service.interceptors.response.use(
     const status = response.status
     const message = response.data?.message || `服务器错误 (${status})`
 
-    // 统一认证错误处理
+    // 只在认证错误(401/403)时清除用户凭证并跳转登录页
+    // 其他错误类型保留用户凭证，允许用户继续操作
     if ([401, 403].includes(status)) {
       ElMessage.error(`访问被拒绝 (${status})`)
-      clearUserSession()
+      // clearUserSession()
       router.push('/login')
     }
 
-    // HTTP 状态码细化处理
+    // HTTP 状态码细化处理 - 保留用户凭证，只显示错误信息
+    // 注意：这里不再清除用户凭证，允许用户继续尝试其他操作
     switch (status) {
       case 400:
         ElMessage.error(`请求参数错误: ${message}`)
@@ -148,7 +195,8 @@ function clearUserSession() {
 
   // 清理 Pinia 状态
   const userStore = useUserStore()
-  userStore.$reset()
+  // 使用 clearUserInfo 方法替代 $reset()
+  userStore.clearUserInfo()
 
   // 清理 Cookies（如果使用）
   if (navigator.cookieEnabled) {

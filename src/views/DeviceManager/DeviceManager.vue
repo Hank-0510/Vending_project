@@ -47,6 +47,11 @@
               <el-button type="danger" size="small" icon="Delete" @click="del(scope.row)"> 删除 </el-button>
             </template>
           </el-table-column>
+          <el-table-column prop="commodity" label="商品详情">
+            <template #default="scope">
+              <el-button type="primary" size="small" icon="Edit" @click="showProductDialog(scope.row)"> 查看 </el-button>
+            </template>
+          </el-table-column>
           <el-table-column prop="costAllocation" label="分账管理">
             <template #default="scope">
               <el-button type="primary" size="small" icon="Edit"> 进入 </el-button>
@@ -56,6 +61,7 @@
       </div>
     </div>
     <MenuDrawer ref="menuDrawerRef" />
+    <ProductDialog ref="productDialogRef" :machine-id="currentMachineId" />
   </div>
 </template>
 <!--设备管理-->
@@ -65,6 +71,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { Search } from '@element-plus/icons-vue'
 import MenuDrawer from './components/MenuDrawer.vue'
+import ProductDialog from './components/ProductDialog.vue'
 // import { deviceData } from '@/mock/deviceData.ts'
 import { getDeviceList, addDevice, updateDevice, deleteDevice } from '@/api/device'
 
@@ -73,6 +80,8 @@ import { getDeviceList, addDevice, updateDevice, deleteDevice } from '@/api/devi
 const tableData = ref([])
 const menuDrawer = ref()
 const menuDrawerRef = ref()
+const productDialogRef = ref()
+const currentMachineId = ref(0)
 // const formInline = reactive({})
 const ruleFormRef = ref<FormInstance>()
 // const reset = (formEl: FormInstance | undefined) => {}
@@ -214,6 +223,16 @@ const del = async (row: any) => {
     })
 }
 
+// 显示商品管理弹窗
+const showProductDialog = (row: any) => {
+  if (row && row.id) {
+    currentMachineId.value = row.id
+    productDialogRef.value.show()
+  } else {
+    ElMessage.warning('设备ID不存在')
+  }
+}
+
 // 页面加载时获取数据
 onMounted(() => {
   fetchData()
@@ -233,7 +252,7 @@ onMounted(() => {
   width: 100%;
   padding: 16px;
   border-radius: 4px;
-  background: rgb(20, 202, 235);
+  background:#00619a;
   box-shadow: 0 0 12px rgb(0 0 0 / 5%);
   margin-bottom: 16px;
   

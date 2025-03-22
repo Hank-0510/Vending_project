@@ -4,31 +4,31 @@
     class="sidebar-menu"
     :collapse="isCollapse"
     :router="true"
-    background-color="#545c64"
-    text-color="#fff"
-    active-text-color="#ffd04b"
-  >
-    <div class="logo-container">
-      <h3 v-if="!isCollapse">自动售货系统</h3>
-      <h3 v-else>系统</h3>
+    background-color="#f5f5f5"
+    text-color="#333333"
+    active-text-color="#59a5f5"
+      >
+    <div class="logo-container" @click="toggleCollapse">
+      <h2 v-if="!isCollapse">自动售货系统</h2>
+      <h2 v-else>展开</h2>
     </div>
     
     <!-- 已登录状态显示的菜单项 -->
     <template v-if="isLoggedIn">
       <el-menu-item index="/">
         <el-icon><el-icon-house /></el-icon>
-        <template #title>首页</template>
+        <template #title><h3>首页</h3></template>
       </el-menu-item>
       
       <el-menu-item index="/deviceMan" v-if="hasPermission(['super', 'admin'])">
         <el-icon><el-icon-box /></el-icon>
-        <template #title>设备管理</template>
+        <template #title><h3>设备管理</h3></template>
       </el-menu-item>
       
       <el-sub-menu index="orders" v-if="hasPermission(['super', 'admin', 'normal'])">
         <template #title>
           <el-icon><el-icon-shopping-cart /></el-icon>
-          <span>订单管理</span>
+          <span><h3>订单管理</h3></span>
         </template>
         <el-menu-item index="/orderEmployer">雇主订单</el-menu-item>
         <el-menu-item index="/orderUser" v-if="hasPermission(['super', 'admin'])">用户订单</el-menu-item>
@@ -36,17 +36,17 @@
       
       <el-menu-item index="/contract" v-if="hasPermission(['super', 'admin'])">
         <el-icon><el-icon-document /></el-icon>
-        <template #title>合同系统</template>
+        <template #title><h3>合同系统</h3></template>
       </el-menu-item>
       
       <el-menu-item index="/usermanager" v-if="hasPermission(['super'])">
         <el-icon><el-icon-user /></el-icon>
-        <template #title>用户管理</template>
+        <template #title><h3>用户管理</h3></template>
       </el-menu-item>
       
       <el-menu-item index="/chargemanager" v-if="hasPermission(['super', 'admin'])">
         <el-icon><el-icon-money /></el-icon>
-        <template #title>充值管理</template>
+        <template #title><h3>充值管理</h3></template>
       </el-menu-item>
       
       <!-- 登录后显示退出登录组件 -->
@@ -62,11 +62,6 @@
         <template #title>登录</template>
       </el-menu-item>
     </template>
-    
-    <div class="collapse-btn" @click="toggleCollapse">
-      <el-icon v-if="isCollapse"><el-icon-arrow-right /></el-icon>
-      <el-icon v-else><el-icon-arrow-left /></el-icon>
-    </div>
   </el-menu>
 </template>
 
@@ -135,14 +130,14 @@ watch(() => userStore.isLoggedIn(), (isLoggedIn) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffd04b;
+  color: #0077c2;
   padding: 0 15px;
   box-sizing: border-box;
   margin-bottom: 10px;
 
-  h3 {
-    margin: 0;
-    font-size: 18px;
+  h2 {
+    margin: 10px;
+    font-size: 22px;
   }
 }
 
@@ -168,7 +163,7 @@ watch(() => userStore.isLoggedIn(), (isLoggedIn) => {
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;
-  background-color: #4a5056;
+  background-color: #c8ffff;
   color: #fff;
   padding: 5px;
   border-radius: 50%;
@@ -179,7 +174,7 @@ watch(() => userStore.isLoggedIn(), (isLoggedIn) => {
   justify-content: center;
   
   &:hover {
-    background-color: #606366;
+    background-color: #c8ffff;
   }
 }
 </style>

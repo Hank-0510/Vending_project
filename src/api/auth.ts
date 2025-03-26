@@ -4,7 +4,6 @@ import request from '@/utils/request'
 export function login(data: {
   username: string
   password: string
-  role: string
 }) {
   return request({
     url: '/api/auth/login',
@@ -61,7 +60,6 @@ export function mockLogin(data: {
 export function mockLogin(data: {
   username: string
   password: string
-  role: string
 }) {
   return login(data)
 }

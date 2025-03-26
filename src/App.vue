@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { useUserStore } from './stores/user'
+import { useUserStore } from './stores/user'  
 import Login from './views/Login/index.vue'
 import Home from './views/Home/index.vue'
 import Sidebar from './components/Sidebar.vue'

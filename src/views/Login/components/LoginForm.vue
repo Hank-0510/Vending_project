@@ -39,13 +39,7 @@
         </el-input>
       </el-form-item>
   
-      <el-form-item label="" prop="role" class="form-item">
-        <el-select v-model="loginForm.role" placeholder="请选择角色" class="role-select">
-          <el-option label="超级管理员" value="super" />
-          <el-option label="商家管理员" value="admin" />
-          <el-option label="补货员" value="normal" />
-        </el-select>
-      </el-form-item>
+      <!-- 角色选择已移除，将从后端返回的数据中获取角色 -->
   
       <el-form-item>
         <div class="remember-me">
@@ -80,8 +74,8 @@
 
   const loginForm = reactive({
     username: '',
-    password: '',
-    role: ''
+    password: ''
+    // 角色字段已移除，将从后端返回的数据中获取
   })
 
   // 在组件挂载时检查localStorage中的登录信息
@@ -89,20 +83,18 @@
 onMounted(() => {
     const rememberedUsername = localStorage.getItem('rememberedUsername')
     const rememberedPassword = localStorage.getItem('rememberedPassword')
-    const rememberedRole = localStorage.getItem('rememberedRole')
     
-    if (rememberedUsername && rememberedPassword && rememberedRole) {
+    if (rememberedUsername && rememberedPassword) {
       loginForm.username = rememberedUsername
       loginForm.password = rememberedPassword
-      loginForm.role = rememberedRole
       rememberMe.value = true
     }
   })
 
   const loginRules = {
     username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-    password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-    role: [{ required: true, message: '请选择角色', trigger: 'change' }]
+    password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
+    // 角色验证已移除
   }
 
   function showPwd() {
@@ -134,23 +126,24 @@ onMounted(() => {
             // 保存登录信息到localStorage
             localStorage.setItem('rememberedUsername', loginForm.username)
             localStorage.setItem('rememberedPassword', loginForm.password)
-            localStorage.setItem('rememberedRole', loginForm.role)
           } else {
             // 清除之前可能保存的登录信息
             localStorage.removeItem('rememberedUsername')
             localStorage.removeItem('rememberedPassword')
-            localStorage.removeItem('rememberedRole')
+            localStorage.removeItem('rememberedRole') // 仍然移除可能存在的旧数据
+          }
+          
+          // 从响应中获取用户角色
+          const userRole = res.data.role || res.data.data?.role
+          if (!userRole) {
+            throw new Error('服务器未返回用户角色信息')
           }
           
           // 保存用户信息、token和角色
-          // 添加模拟的刷新令牌（实际项目中应该从后端获取）
-          // const refreshToken = `refresh-token-${Date.now()}`
-          
           userStore.setUserInfo({
             username: loginForm.username,
-            role: loginForm.role, // 保存用户选择的角色
-            token: token,
-           
+            role: userRole, // 使用后端返回的角色
+            token: token
           })
           userStore.updateToken(token)
           
@@ -166,7 +159,7 @@ onMounted(() => {
           }
         } catch (error: any) {
           console.error('登录失败:', error)
-          ElMessage.error(error.message || '登录失败，请检查用户名、密码和角色')
+          ElMessage.error(error.message || '登录失败，请检查用户名和密码')
         } finally {
           loading.value = false
         }

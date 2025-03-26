@@ -17,12 +17,23 @@ declare module 'vue-router' {
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+  
     {
       path: '/',
       name: 'home',
       component: HomeView,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        roles: ['super', 'admin']
+      }
+    },
+    {
+      path: '/productmanager',
+      name: 'productmanager',
+      component: () => import('@/views/ProductManager/index.vue'),
+      meta: {
+        requiresAuth: true,
+        roles: ['super', 'admin','normal']
       }
     },
     {
@@ -30,6 +41,7 @@ const router = createRouter({
       name: 'login',
       component: LoginView,
     },
+  
     {
       path: '/deviceMan',
       name: 'deviceMan',
@@ -39,24 +51,27 @@ const router = createRouter({
         roles: ['super', 'admin']
       }
     },
+   
     {
       path: '/orderEmployer',
       name: 'orderEmployer',
       component: OrderEmployer,
       meta: {
         requiresAuth: true,
-        roles: ['super', 'admin', 'normal']
+        roles: ['super', 'normal']
       }
     },
+   
     {
       path: '/orderUser',
       name: 'orderUser',
       component: OrderUser,
       meta: {
         requiresAuth: true,
-        roles: ['super', 'admin']
+        roles: ['super']
       }
     },
+
     {
       path: '/contract',
       name: 'contractSystem',
@@ -68,6 +83,7 @@ const router = createRouter({
     },
 
 
+   
     {
       path: '/usermanager',
       name: 'usermanager',
@@ -78,20 +94,23 @@ const router = createRouter({
       }
     },
 
+   
     {
       path: '/chargemanager',
       name: 'chargemanager',
       component: () => import('@/views/ChargeManager/index.vue'),
       meta: {
         requiresAuth: true,
-        roles: ['super', 'admin']
+        roles: ['super']
       }
     },
+ 
     {
       path: '/403',
       name: 'forbidden',
       component: () => import('@/views/Error/403.vue')
     },
+   
     {
       path: '/:pathMatch(.*)*',
       name: 'not-found',
@@ -127,9 +146,15 @@ router.beforeEach((to, from, next) => {
     }
   }
   
-  // 如果已登录且要访问登录页，则重定向到首页
+  // 如果已登录且要访问登录页，则根据用户角色重定向
   if (to.path === '/login' && (userStore.isLoggedIn() || localToken)) {
-    next({ path: '/' })
+    const userRole = userStore.getUserRole()
+    // normal用户重定向到productmanager页面，其他角色重定向到首页
+    if (userRole === 'normal') {
+      next({ path: '/productmanager' })
+    } else {
+      next({ path: '/' })
+    }
     return
   }
   

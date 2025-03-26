@@ -20,31 +20,36 @@
         <template #title><h3>首页</h3></template>
       </el-menu-item>
       
-      <el-menu-item index="/deviceMan" v-if="hasPermission(['super', 'admin'])">
+      <el-menu-item v-if="visibleMenus.includes('/deviceMan')" index="/deviceMan">
         <el-icon><el-icon-box /></el-icon>
         <template #title><h3>设备管理</h3></template>
       </el-menu-item>
+
+      <el-menu-item v-if="visibleMenus.includes('/productmanager')" index="/productmanager">
+        <el-icon><el-icon-shopping-bag /></el-icon>
+        <template #title><h3>商品管理</h3></template>
+      </el-menu-item>
       
-      <el-sub-menu index="orders" v-if="hasPermission(['super', 'admin', 'normal'])">
+      <el-sub-menu index="orders" v-if="visibleMenus.includes('/orderEmployer') || visibleMenus.includes('/orderUser')">
         <template #title>
           <el-icon><el-icon-shopping-cart /></el-icon>
           <span><h3>订单管理</h3></span>
         </template>
-        <el-menu-item index="/orderEmployer">雇主订单</el-menu-item>
-        <el-menu-item index="/orderUser" v-if="hasPermission(['super', 'admin'])">用户订单</el-menu-item>
+        <el-menu-item v-if="visibleMenus.includes('/orderEmployer')" index="/orderEmployer">雇主订单</el-menu-item>
+        <el-menu-item v-if="visibleMenus.includes('/orderUser')" index="/orderUser">用户订单</el-menu-item>
       </el-sub-menu>
       
-      <el-menu-item index="/contract" v-if="hasPermission(['super', 'admin'])">
+      <el-menu-item v-if="visibleMenus.includes('/contract')" index="/contract">
         <el-icon><el-icon-document /></el-icon>
         <template #title><h3>合同系统</h3></template>
       </el-menu-item>
       
-      <el-menu-item index="/usermanager" v-if="hasPermission(['super'])">
+      <el-menu-item v-if="visibleMenus.includes('/usermanager')" index="/usermanager">
         <el-icon><el-icon-user /></el-icon>
         <template #title><h3>用户管理</h3></template>
       </el-menu-item>
       
-      <el-menu-item index="/chargemanager" v-if="hasPermission(['super', 'admin'])">
+      <el-menu-item v-if="visibleMenus.includes('/chargemanager')" index="/chargemanager">
         <el-icon><el-icon-money /></el-icon>
         <template #title><h3>充值管理</h3></template>
       </el-menu-item>
@@ -70,13 +75,13 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import Logout from './Logout.vue'
+import router from '@/router'
 
 // 控制菜单是否折叠
 const isCollapse = ref(false)
 
 // 获取当前路由和用户状态
 const route = useRoute()
-const router = useRouter()
 const userStore = useUserStore()
 
 // 计算当前活跃菜单项
@@ -91,9 +96,28 @@ const isLoggedIn = computed(() => {
 
 // 检查用户是否有特定权限
 const hasPermission = (roles: string[]) => {
+  console.log('Checking permission:', roles)
   const userRole = userStore.getUserRole()
   return roles.includes(userRole)
 }
+
+// 计算当前用户可见的菜单项
+const visibleMenus = computed(() => {
+  const userRole = userStore.getUserRole()
+  const routes = router.getRoutes()
+  const accessiblePaths: string[] = []
+  
+  // 遍历所有路由，检查用户是否有权限访问
+  routes.forEach(route => {
+    // 如果路由没有设置roles或者用户角色在允许的roles中，则添加到可见菜单
+    if (!route.meta.roles || (route.meta.roles as string[])?.includes(userRole)) {
+      accessiblePaths.push(route.path)
+    }
+  })
+  
+  console.log('Visible menus for role', userRole, ':', accessiblePaths)
+  return accessiblePaths
+})
 
 // 切换折叠状态
 const toggleCollapse = () => {

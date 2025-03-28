@@ -104,6 +104,16 @@ const router = createRouter({
         roles: ['super']
       }
     },
+
+    {
+      path: '/usercockpit',
+      name: 'usercockpit',
+      component: () => import('@/views/UserCockpit/index.vue'),
+      meta: {
+        requiresAuth: true,
+        roles: ['super']
+      }
+    },
  
     {
       path: '/403',

@@ -53,6 +53,11 @@
         <el-icon><el-icon-money /></el-icon>
         <template #title><h3>充值管理</h3></template>
       </el-menu-item>
+
+      <el-menu-item v-if="visibleMenus.includes('/usercockpit')" index="/usercockpit">
+        <el-icon><el-icon-money /></el-icon>
+        <template #title><h3>在线驾驶舱</h3></template>
+      </el-menu-item>
       
       <!-- 登录后显示退出登录组件 -->
       <div class="logout-container">

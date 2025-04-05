@@ -14,24 +14,19 @@
           </div>
         </el-form>
       </div>
-      <div class="footer">
-        <div class="table-wrap">
+    <div class="footer">
+      <div class="table-wrap">
           <el-table :data="tableData" style="width: 100%" border row-key="id" class="table" empty-text="无对应内容">
-            <el-table-column class="table-child" prop="serialNumber" label="编号" />
-            <el-table-column class="table-child" prop="merchantName" label="用户名称" />
+            <el-table-column class="table-child" prop="serialNumber" label="序号" />
             <el-table-column class="table-child" prop="orderNumber" label="订单编号" />
-            <el-table-column class="table-child" prop="deviceQuantity" label="购买设备数量" />
-            <el-table-column class="table-child" prop="totalPrice" label="订单总价" />
-            <el-table-column class="table-child" prop="paymentMethod" label="支付方式" />
+            <el-table-column class="table-child" prop="machineNumber" label="设备编号" />
+            <el-table-column class="table-child" prop="merchantName" label="商品名称" />
+            <el-table-column class="table-child" prop="cargoNumber" label="商品编号" />
+            <el-table-column class="table-child" prop="totalPrice" label="订单金额" />
             <el-table-column class="table-child" prop="paymentStatus" label="支付状态" />
-            <el-table-column class="table-child" prop="machineNumber" label="机器编号" />
-            <el-table-column class="table-child" prop="cargoNumber" label="货物编号" />
-        
-            <el-table-column class="table-child" prop="updateTime" label="更新时间" />
             <el-table-column class="table-child" prop="creationTime" label="创建时间" />
   
-  
-            <el-table-column class="table-child" prop="status" label="操作">
+            <el-table-column class="table-child" prop="status" label="操作" width="190px">
               <template #default="scope">
                 <el-button type="primary" size="small" icon="Edit" @click="edit(scope.row)"> 编辑 </el-button>
                 <el-button type="danger" size="small" icon="Delete" @click="del(scope.row)"> 删除 </el-button>
@@ -44,10 +39,17 @@
       <MenuDrawer ref="menuDrawerRef" />
     </div>
   </template>
+
+
+
+
+
+
+
   <!--设备管理-->
   <script lang="ts" setup name="orderEmployee" >
-    import { ElMessageBox,ElMessage } from 'element-plus'
-    import type { FormInstance } from 'element-plus'
+  import { ElMessageBox,ElMessage } from 'element-plus'
+  import type { FormInstance } from 'element-plus'
   import { ref, reactive } from 'vue'
   import { Search } from '@element-plus/icons-vue'
   import MenuDrawer from './components/employerMenuDrawer.vue'
@@ -167,13 +169,14 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
+    background-color: #f5f5f5;
   }
 
   .header {
-    width: 100%;
+    width: 97%;
     padding: 16px;
     border-radius: 4px;
-    background: #00619a;
+    background: #bb2649;
     box-shadow: 0 0 12px rgb(0 0 0 / 5%);
     margin-bottom: 16px;
     
@@ -205,7 +208,7 @@
     flex-direction: column;
     border-radius: 4px;
     overflow: hidden;
-    background: white;
+    background-color: #f5f5f5;
     box-shadow: 0 0 12px rgb(0 0 0 / 5%);
     position: relative;
     box-sizing: border-box;

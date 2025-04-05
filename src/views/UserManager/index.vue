@@ -1,5 +1,5 @@
 <template>
-    <el-card>
+    <el-card class="userdi">
         <div v-if="show">
             <el-button type="primary" @click="changeShow">
                 <el-icon style="margin-right: 5px;">
@@ -7,12 +7,12 @@
                 </el-icon>
                 添加账户
             </el-button>
-            <el-table style="width: 100%;" :data="data" border height="1000px">
+            <el-table  :data="data" border class="biao2">
                 <el-table-column type="selection" width="80">
                 </el-table-column>
                 <el-table-column type="index" label="序号" width="80">
                 </el-table-column>
-                <el-table-column prop="userName" label="账号" width="150">
+                <el-table-column prop="userName" label="账号" width="100">
                 </el-table-column>
                 <el-table-column prop="passWord" label="密码" width="150">
                 </el-table-column>
@@ -24,9 +24,9 @@
                 </el-table-column>
                 <el-table-column prop="onlineStatus" label="在线状态" width="100">
                 </el-table-column>
-                <el-table-column prop="note" label="备注" width="200">
+                <el-table-column prop="note" label="备注" width="125px">
                 </el-table-column>
-                <el-table-column prop="prop" label="操作" width="width">
+                <el-table-column prop="prop" label="操作" width="190px">
                     <template v-slot="{ row, $index }">
                         <el-button type="primary">
                             <el-icon style="margin-right: 5px;">
@@ -121,7 +121,7 @@ const data = reactive<TableData[]>([
     {
         userName: "user2",
         passWord: "password2",
-        weixin: "wx654321",
+        weixin: "wx654321000000000000000000000000000000000000000000000000",
         merchantId: "100002",
         accountType: "普通用户",
         onlineStatus: "离线",
@@ -366,7 +366,17 @@ const data = reactive<TableData[]>([
 </script>
 
 <style>
+.userdi{
+    background-color: #f5f5f5;
+}
+.biao2{
+    width: 100%;
+    height: 600px;
+    border:  solid #cccccc 1px;
+    background-color: #f5f5f5;
+    
+}
 .inputClass {
-    width: 500px;
+    width: 560px;
 }
 </style>

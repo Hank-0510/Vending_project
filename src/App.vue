@@ -1,4 +1,5 @@
 <template>
+  <Headerall v-if="!isLoginPage" class="headerall"/>
   <div class="app-container">
     <!-- 根据路由判断是否显示侧边栏，登录页面不显示侧边栏 -->
     <Sidebar v-if="!isLoginPage" class="sidebar" />
@@ -15,6 +16,8 @@ import { useUserStore } from './stores/user'
 import Login from './views/Login/index.vue'
 import Home from './views/Home/index.vue'
 import Sidebar from './components/Sidebar.vue'
+import Headerall from './components/Header.vue'
+import type { Header } from 'element-plus/es/components/table-v2/src/components/index.mjs'
 
 // 获取当前路由和用户存储
 const route = useRoute()
@@ -57,11 +60,14 @@ body {
 
 .app-container {
   display: flex;
-  height: 100vh;
+  height: 100%;
   width: 100%;
 }
 
 .sidebar {
+  flex-shrink: 0;
+}
+.headerall {
   flex-shrink: 0;
 }
 

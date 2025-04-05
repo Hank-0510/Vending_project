@@ -1,7 +1,7 @@
 <template>
-    <el-card>
-        <div>
-            <el-table style="width: 100%;" :data="data" border height="1000px">
+    <el-card class="di">
+        <div >
+            <el-table class="biao" border :data="data">
                 <el-table-column type="selection" width="80">
                 </el-table-column>
                 <el-table-column type="index" label="序号" width="80">
@@ -162,181 +162,64 @@ const data = reactive<TableData[]>([
         note: "无",
     },
     {
-        userName: "user10",
-        passWord: "password10",
-        weixin: "wx468024",
-        merchantId: "100010",
-        accountType: "普通用户",
-        onlineStatus: "离线",
-        note: "无",
-    },
-    {
-        userName: "user11",
-        passWord: "password11",
-        weixin: "wx579135",
-        merchantId: "100011",
+        userName: "user5",
+        passWord: "password5",
+        weixin: "wx901234",
+        merchantId: "100005",
         accountType: "管理员",
         onlineStatus: "在线",
         note: "无",
     },
     {
-        userName: "user12",
-        passWord: "password12",
-        weixin: "wx680246",
-        merchantId: "100012",
+        userName: "user6",
+        passWord: "password6",
+        weixin: "wx567890",
+        merchantId: "100006",
         accountType: "普通用户",
         onlineStatus: "离线",
         note: "无",
     },
     {
-        userName: "user13",
-        passWord: "password13",
-        weixin: "wx791357",
-        merchantId: "100013",
+        userName: "user7",
+        passWord: "password7",
+        weixin: "wx135790",
+        merchantId: "100007",
         accountType: "管理员",
         onlineStatus: "在线",
         note: "无",
     },
     {
-        userName: "user14",
-        passWord: "password14",
-        weixin: "wx802468",
-        merchantId: "100014",
+        userName: "user8",
+        passWord: "password8",
+        weixin: "wx246801",
+        merchantId: "100008",
         accountType: "普通用户",
         onlineStatus: "离线",
         note: "无",
     },
     {
-        userName: "user15",
-        passWord: "password15",
-        weixin: "wx913579",
-        merchantId: "100015",
-        accountType: "管理员",
-        onlineStatus: "在线",
-        note: "无",
-    },
-    {
-        userName: "user16",
-        passWord: "password16",
-        weixin: "wx024680",
-        merchantId: "100016",
-        accountType: "普通用户",
-        onlineStatus: "离线",
-        note: "无",
-    },
-    {
-        userName: "user17",
-        passWord: "password17",
-        weixin: "wx135791",
-        merchantId: "100017",
-        accountType: "管理员",
-        onlineStatus: "在线",
-        note: "无",
-    },
-    {
-        userName: "user18",
-        passWord: "password18",
-        weixin: "wx246802",
-        merchantId: "100018",
-        accountType: "普通用户",
-        onlineStatus: "离线",
-        note: "无",
-    },
-    {
-        userName: "user19",
-        passWord: "password19",
+        userName: "user9",
+        passWord: "password9",
         weixin: "wx357913",
-        merchantId: "100019",
+        merchantId: "100009",
         accountType: "管理员",
         onlineStatus: "在线",
         note: "无",
-    },
-    {
-        userName: "user20",
-        passWord: "password20",
-        weixin: "wx468024",
-        merchantId: "100020",
-        accountType: "普通用户",
-        onlineStatus: "离线",
-        note: "无",
-    },
-    {
-        userName: "user21",
-        passWord: "password21",
-        weixin: "wx579135",
-        merchantId: "100021",
-        accountType: "管理员",
-        onlineStatus: "在线",
-        note: "无",
-    },
-    {
-        userName: "user22",
-        passWord: "password22",
-        weixin: "wx680246",
-        merchantId: "100022",
-        accountType: "普通用户",
-        onlineStatus: "离线",
-        note: "无",
-    },
-    {
-        userName: "user23",
-        passWord: "password23",
-        weixin: "wx791357",
-        merchantId: "100023",
-        accountType: "管理员",
-        onlineStatus: "在线",
-        note: "无",
-    },
-    {
-        userName: "user24",
-        passWord: "password24",
-        weixin: "wx802468",
-        merchantId: "100024",
-        accountType: "普通用户",
-        onlineStatus: "离线",
-        note: "无",
-    },
-    {
-        userName: "user25",
-        passWord: "password25",
-        weixin: "wx913579",
-        merchantId: "100025",
-        accountType: "管理员",
-        onlineStatus: "在线",
-        note: "无",
-    },
-    {
-        userName: "user26",
-        passWord: "password26",
-        weixin: "wx024680",
-        merchantId: "100026",
-        accountType: "普通用户",
-        onlineStatus: "离线",
-        note: "无",
-    },
-    {
-        userName: "user27",
-        passWord: "password27",
-        weixin: "wx135791",
-        merchantId: "100027",
-        accountType: "管理员",
-        onlineStatus: "在线",
-        note: "无",
-    },
-    {
-        userName: "user28",
-        passWord: "password28",
-        weixin: "wx246802",
-        merchantId: "100028",
-        accountType: "普通用户",
-        onlineStatus: "离线",
-        note: "无",
-    },
+    }
 ]);
 
 </script>
 
 <style>
+.di{
+    background-color: #f5f5f5;
+}
+.biao{
+    width: 100%;
+    height: 600px;
+    border:  solid #cccccc 1px;
+    background-color: #f5f5f5;
+}
 .inputClass {
     width: 500px;
 }

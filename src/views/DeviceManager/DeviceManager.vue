@@ -24,24 +24,24 @@
     <div class="footer">
       <div class="table-wrap">
         <el-table :data="tableData" style="width: 100%" border row-key="id" class="table" empty-text="无对应内容">
-          <el-table-column class="table-child" prop="deviceNumber" label="设备编号" />
-          <el-table-column class="table-child" prop="deviceModel" label="设备型号" />
-          <el-table-column class="table-child" prop="deviceCardNumber" label="设备卡号" />
+          <el-table-column class="table-child" prop="deviceNumber" label="设备编号" width="90px"/>
+          <el-table-column class="table-child" prop="deviceModel" label="设备型号"  width="90px"/>
+          <el-table-column class="table-child" prop="deviceCardNumber" label="设备卡号" width="90px" />
           <el-table-column class="table-child" prop="price" label="价格" />
-          <el-table-column class="table-child" prop="commissionSharing" label="佣金分成" />
+          <el-table-column class="table-child" prop="commissionSharing" label="佣金分成"  width="90px"/>
           <el-table-column class="table-child" prop="inventory" label="库存" />
-          <el-table-column class="table-child" prop="boundQrCode" label="绑定二维码" />
-          <el-table-column class="table-child" prop="deviceCapacity" label="设备容量" />
-          <el-table-column class="table-child" prop="stockThreshold" label="缺货阈值" />
+          <el-table-column class="table-child" prop="boundQrCode" label="绑定二维码" width="110px"/>
+          <el-table-column class="table-child" prop="deviceCapacity" label="设备容量"width="90px" />
+          <el-table-column class="table-child" prop="stockThreshold" label="缺货阈值"  width="90px"/>
           <el-table-column class="table-child" prop="orderCode" label="下单码" />
-          <el-table-column class="table-child" prop="boundPersonnel" label="绑定人员" />
-          <el-table-column class="table-child" prop="enableStatus" label="启用状态" />
-          <el-table-column class="table-child" prop="deviceAddress" label="设备地址" />
-          <el-table-column class="table-child" prop="creationTime" label="创建时间" />
+          <el-table-column class="table-child" prop="admin_username" label="绑定人员" width="90px"/>
+          <el-table-column class="table-child" prop="enableStatus" label="启用状态" width="90px"/>
+          <el-table-column class="table-child" prop="deviceAddress" label="设备地址" width="90px"/>
+          <el-table-column class="table-child" prop="creationTime" label="创建时间" width="90px"/>
           <el-table-column class="table-child" prop="deviceRemark" label="备注框" />
-          <el-table-column class="table-child" prop="advertisement" label="广告链接" />
-          <el-table-column class="table-child" prop="dispensingButton" label="出货按钮" />
-          <el-table-column class="table-child" prop="status" label="操作">
+          <el-table-column class="table-child" prop="advertisement" label="广告链接" width="90px"/>
+          <el-table-column class="table-child" prop="dispensingButton" label="出货按钮" width="90px"/>
+          <el-table-column class="table-child" prop="status" label="操作" width="190px">
             <template #default="scope">
               <el-button type="primary" size="small" icon="Edit" @click="edit(scope.row)"> 编辑 </el-button>
               <el-button type="danger" size="small" icon="Delete" @click="del(scope.row)"> 删除 </el-button>
@@ -74,6 +74,7 @@ import MenuDrawer from './components/MenuDrawer.vue'
 import ProductDialog from './components/ProductDialog.vue'
 // import { deviceData } from '@/mock/deviceData.ts'
 import { getDeviceList, addDevice, updateDevice, deleteDevice } from '@/api/device'
+//import type internal from 'stream'
 
 //表单数据来自mock
 // const tableData = ref(deviceData)
@@ -90,7 +91,12 @@ interface FormInline {
   deviceNumber: string;
   deviceModel: string;
   deviceCardNumber: string;
+  commissionSharing:string;
+
+
   deviceAddress: string;
+  inventory: string;
+
   deviceRemark: string;
 }
 
@@ -98,6 +104,8 @@ const formInline = reactive<FormInline>({
   deviceNumber: '',
   deviceModel: '',
   deviceCardNumber: '',
+  commissionSharing:'',
+  inventory:'',
   deviceAddress: '',
   deviceRemark: ''
 });
@@ -246,15 +254,16 @@ onMounted(() => {
   flex-direction: column;
   height: 100%;
   width: 100%;
+  background-color: #f5f5f5;
 }
 
 .header {
-  width: 100%;
-  padding: 16px;
+  width: 98%;
+  padding: 10px ;
   border-radius: 4px;
-  background:#00619a;
+  background:#bb2649;
   box-shadow: 0 0 12px rgb(0 0 0 / 5%);
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   
   .util {
     margin-bottom: 10px;
@@ -287,11 +296,11 @@ onMounted(() => {
 .footer {
   flex: 1;
   display: flex;
-  padding: 16px;
+  padding: 10px;
   flex-direction: column;
   border-radius: 4px;
   overflow: hidden;
-  background: white;
+  background-color: #f5f5f5;
   box-shadow: 0 0 12px rgb(0 0 0 / 5%);
   position: relative;
   box-sizing: border-box;

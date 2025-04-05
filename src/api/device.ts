@@ -20,12 +20,26 @@ export async function getDeviceList(params: any) {
         status: 'success',
         data: res.data.map((item: any) => ({
           id: item.id,
-          deviceNumber: item.deviceNumber || '',
-          deviceModel: item.deviceModel || '',
+          deviceNumber: item.id || '',
+          deviceModel: item.device_model || '',
           deviceCardNumber: item.name || '',
+          commissionSharing:item.id|| '',
+          price:item.price|| '',
+          inventory:item.inventory|| '',
+          boundQrCode:item.bound_qr_code|| '',
+          deviceCapacity:item.device_capacity|| '',
+          stockThreshold:item.stock_threshold|| '',
+          orderCode:item.order_code|| '',
+          admin_username:item.admin_username|| '',
+          enableStatus:item.enable_status|| '', 
           deviceAddress: item.location || '',
-          deviceRemark: item.remark || '',
-          enableStatus: item.status || ''
+          deviceRemark: item.divice_remark || '',
+          advertisement:item.advertisement|| '',
+          creationTime:item.creation_time|| '',
+          dispensingButton:item.dispensing_button || '',
+          
+
+
         }))
       }
     }

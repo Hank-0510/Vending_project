@@ -29,7 +29,7 @@ const username = computed(() => userStore.userInfo?.username || '用户')
 const handleCommand = (command: string) => {
   if (command === 'logout') {
     userStore.clearUserInfo()
-    ElMessage.success('已退出登录')
+    ElMessage.success('已安全退出系统')
     router.push('/login')
   }
 }

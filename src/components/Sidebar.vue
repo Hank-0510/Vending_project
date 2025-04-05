@@ -4,13 +4,14 @@
     class="sidebar-menu"
     :collapse="isCollapse"
     :router="true"
-    background-color="#f5f5f5"
-    text-color="#333333"
-    active-text-color="#59a5f5"
+    background-color="#fff"
+    text-color="#4b4f5d"
+    active-text-color="#bb2649"
+    
       >
     <div class="logo-container" @click="toggleCollapse">
-      <h2 v-if="!isCollapse">自动售货系统</h2>
-      <h2 v-else>展开</h2>
+      <h2 v-if="!isCollapse"> --------点击缩小导航栏----------</h2>
+      <h2 v-else> -----展开-----</h2>
     </div>
     
     <!-- 已登录状态显示的菜单项 -->
@@ -58,19 +59,7 @@
         <el-icon><el-icon-money /></el-icon>
         <template #title><h3>在线驾驶舱</h3></template>
       </el-menu-item>
-      
-      <!-- 登录后显示退出登录组件 -->
-      <div class="logout-container">
-        <Logout />
-      </div>
-    </template>
-    
-    <!-- 未登录状态只显示登录菜单 -->
-    <template v-else>
-      <el-menu-item index="/login" class="login-item">
-        <el-icon><el-icon-key /></el-icon>
-        <template #title>登录</template>
-      </el-menu-item>
+  
     </template>
   </el-menu>
 </template>
@@ -79,7 +68,6 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
-import Logout from './Logout.vue'
 import router from '@/router'
 
 // 控制菜单是否折叠
@@ -129,62 +117,31 @@ const toggleCollapse = () => {
   isCollapse.value = !isCollapse.value
 }
 
-// 当路由变化时保持激活状态
-onMounted(() => {
-  // 不再在这里初始化用户信息，避免清除登录状态
-})
 
-// 监听登录状态变化
-watch(() => userStore.isLoggedIn(), (isLoggedIn) => {
-  if (!isLoggedIn && route.path !== '/login') {
-    // 如果用户登出且不在登录页，则重定向到登录页
-    router.push('/login')
-  }
-})
 </script>
 
 <style scoped lang="scss">
 .sidebar-menu {
-  height: 100vh;
-  border-right: solid 1px #e6e6e6;
+  border-right: solid 1px #cccccc;
   width: auto;
-  
+  background-color: #fff;
+  position: sticky;
+  top: 80px; // header高度
+  height: calc(100vh - 80px); // 自动计算剩余高度
+
   &:not(.el-menu--collapse) {
     width: 200px;
   }
 }
 
 .logo-container {
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #0077c2;
-  padding: 0 15px;
-  box-sizing: border-box;
-  margin-bottom: 10px;
-
   h2 {
     margin: 10px;
-    font-size: 22px;
+    font-size: 12px;
+    color: #cccccc;
   }
 }
 
-.login-item {
-  position: absolute;
-  bottom: 60px;
-  width: 100%;
-}
-
-.logout-container {
-  position: absolute;
-  bottom: 60px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 10px 0;
-  color: #fff;
-}
 
 .collapse-btn {
   position: absolute;
@@ -202,8 +159,6 @@ watch(() => userStore.isLoggedIn(), (isLoggedIn) => {
   align-items: center;
   justify-content: center;
   
-  &:hover {
-    background-color: #c8ffff;
-  }
+
 }
 </style>

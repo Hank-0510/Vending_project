@@ -264,7 +264,7 @@ onBeforeUnmount(() => {
   .data-dashboard {
     width: 100%;
     min-height: 100vh;
-    background: #f8faff;
+    background: #f5f5f5;
     padding: 20px 40px 20px 20px; 
     box-sizing: border-box;
   }
@@ -274,10 +274,10 @@ onBeforeUnmount(() => {
     line-height: 80px;
     text-align: left;
     padding-left: 30px;
-    background: #2c3e50;
+    background: #bb2649;
     box-shadow: 0 2px 12px rgba(0,0,0,0.05);
     border-radius: 8px;
-    margin: 0 0 20px 0;
+    margin: 0 0 20px -18px;
   }
   
   header h1 {

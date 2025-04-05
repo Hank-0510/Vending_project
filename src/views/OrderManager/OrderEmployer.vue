@@ -20,7 +20,7 @@
           <el-table-column class="table-child" prop="serialNumber" label="编号" />
           <el-table-column class="table-child" prop="merchantName" label="商家名称" />
           <el-table-column class="table-child" prop="orderNumber" label="订单编号" />
-          <el-table-column class="table-child" prop="deviceQuantity" label="购买设备数量" />
+          <el-table-column class="table-child" prop="deviceQuantity" label="购买设备数量" width="110px"/>
           <el-table-column class="table-child" prop="totalPrice" label="订单总价" />
           <el-table-column class="table-child" prop="paymentMethod" label="支付方式" />
           <el-table-column class="table-child" prop="paymentStatus" label="支付状态" />
@@ -30,7 +30,7 @@
           <el-table-column class="table-child" prop="creationTime" label="创建时间" />
 
 
-          <el-table-column class="table-child" prop="status" label="操作">
+          <el-table-column class="table-child" prop="status" label="操作" width="190px">
             <template #default="scope">
               <el-button type="primary" size="small" icon="Edit" @click="edit(scope.row)"> 编辑 </el-button>
               <el-button type="danger" size="small" icon="Delete" @click="del(scope.row)"> 删除 </el-button>
@@ -193,13 +193,14 @@ onMounted(() => {
   flex-direction: column;
   height: 100%;
   width: 100%;
+  background-color: #f5f5f5;
 }
 
 .header {
-  width: 100%;
+  width: 97%;
   padding: 16px;
   border-radius: 4px;
-  background: #00619a;
+  background: #bb2649;
   box-shadow: 0 0 12px rgb(0 0 0 / 5%);
   margin-bottom: 16px;
   
@@ -231,7 +232,7 @@ onMounted(() => {
   flex-direction: column;
   border-radius: 4px;
   overflow: hidden;
-  background: white;
+  background-color: #f5f5f5;
   box-shadow: 0 0 12px rgb(0 0 0 / 5%);
   position: relative;
   box-sizing: border-box;

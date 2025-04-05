@@ -15,9 +15,7 @@
       </el-form>
     </div>
     <div class="footer">
-      <!-- <i>每个合同是通过按钮点击查看的还是第三列的合同名称设计跳转，将合同放到服务器吗？</i>
-
-      <i>哒哒</i> -->
+     
       <div class="table-wrap">
         <el-table :data="tableData" style="width: 100%" border row-key="id" class="table" empty-text="无对应内容">
           <el-table-column class="table-child" prop="serialNumber" label="编号" />
@@ -141,13 +139,14 @@ const onSearch = () => {
   flex-direction: column;
   height: 100%;
   width: 100%;
+  background-color: #f5f5f5;
 }
 
 .header {
-  width: 100%;
+  width: 97%;
   padding: 16px;
   border-radius: 4px;
-  background: #00619a;
+  background: #bb2649;
   box-shadow: 0 0 12px rgb(0 0 0 / 5%);
   margin-bottom: 16px;
   
@@ -179,7 +178,7 @@ const onSearch = () => {
   flex-direction: column;
   border-radius: 4px;
   overflow: hidden;
-  background: white;
+  background-color: #f5f5f5;
   box-shadow: 0 0 12px rgb(0 0 0 / 5%);
   position: relative;
   box-sizing: border-box;

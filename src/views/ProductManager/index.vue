@@ -1,6 +1,5 @@
 <template>
   <div class="product-manager">
-    <h1 class="page-title">商品管理</h1>
     
     <div class="product-container">
       <!-- 左侧商品列表 -->
@@ -496,6 +495,7 @@ async function deleteMachineProducts() {
 .product-manager {
   padding: 20px;
   height: 100%;
+  background-color:#f5f5f5;
 }
 
 .page-title {

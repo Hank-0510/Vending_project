@@ -57,7 +57,8 @@
   // import { someFunction, type FormInstance } from 'some-library';
   import { ref, reactive } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
-  import { ElMessage, FormInstance } from 'element-plus'
+  import { ElMessage } from 'element-plus'
+import type { FormInstance } from 'element-plus'
   import { UserFilled, GoodsFilled, View, Hide } from '@element-plus/icons-vue'
   import { mockLogin } from '@/api/auth'
   import { useUserStore } from '@/stores/user'

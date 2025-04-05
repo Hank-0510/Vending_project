@@ -45,14 +45,29 @@
 </template>
 <!--设备管理-->
 <script lang="ts" setup name="orderEmployee" >
-  import { ElMessageBox,ElMessage } from 'element-plus'
-  import type { FormInstance } from 'element-plus'
+import { ElMessageBox,ElMessage } from 'element-plus'
+import type { FormInstance } from 'element-plus'
 import { ref, reactive, onMounted } from 'vue'
 import { Search } from '@element-plus/icons-vue'
 import MenuDrawer from './components/employerMenuDrawer.vue'
 import { getSuperAdminOrders, deleteOrder, updateOrder } from '@/api/orders'
 //表单数据来自API
-const tableData = ref([])
+interface OrderData {
+  id: number;
+  serialNumber: string;
+  merchantName: string;
+  orderNumber: string;
+  deviceQuantity: number;
+  totalPrice: number;
+  paymentMethod: string;
+  paymentStatus: string;
+  machineNumber: string;
+  cargoNumber: string;
+  updateTime: string;
+  creationTime: string;
+}
+
+const tableData = ref<OrderData[]>([])
 const menuDrawer = ref()
 const menuDrawerRef = ref()
 // const formInline = reactive({})
@@ -63,7 +78,7 @@ const fetchData = async () => {
   try {
     const response = await getSuperAdminOrders();
     if (response.status === 'success') {
-      tableData.value = response.data;
+      tableData.value = response.data as OrderData[];
     } else {
       ElMessage.error(response.message || '获取订单列表失败');
     }

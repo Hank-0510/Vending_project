@@ -1,11 +1,13 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores/user'
-import router from '@/router'
+// 使用动态导入以避免循环依赖
+// import router from '@/router'
 import { AxiosHeaders } from 'axios'
 
 // 创建 axios 实例
 const service = axios.create({
+  baseURL: import.meta.env.VITE_BASE_API || '/api',
   timeout: 15000, // 增加超时时间到15秒
   headers: {
     'Content-Type': 'application/json',
@@ -46,8 +48,8 @@ service.interceptors.response.use(undefined, async (err) => {
 
 // 不需要 token 的白名单接口列表
 const NO_AUTH_URLS = [
-  '/api/auth/login',    // 登录接口
-  '/api/captcha'        // 验证码接口
+  '/auth/login',    // 登录接口
+  '/captcha'        // 验证码接口
 ]
 
 // 请求拦截器
@@ -70,7 +72,11 @@ service.interceptors.request.use(
     if (!token) {
       console.error('[拦截器] Token缺失，终止请求')
       ElMessage.warning('登录凭证已失效，请重新登录')
-      router.push('/login')
+      // 动态导入router以避免循环依赖
+      import('@/router').then(module => {
+        const router = module.default
+        router.push('/login')
+      })
       return Promise.reject(new Error('Authorization token missing'))
     }
 
@@ -152,8 +158,12 @@ service.interceptors.response.use(
     // 其他错误类型保留用户凭证，允许用户继续操作
     if ([401, 403].includes(status)) {
       ElMessage.error(`访问被拒绝 (${status})`)
-      // clearUserSession()
-      router.push('/login')
+      clearUserSession()
+      // 动态导入router以避免循环依赖
+      import('@/router').then(module => {
+        const router = module.default
+        router.push('/login')
+      })
     }
 
     // HTTP 状态码细化处理 - 保留用户凭证，只显示错误信息

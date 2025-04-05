@@ -5,7 +5,7 @@ import request from '../utils/request'
 export async function getSuperAdminOrders() {
   try {
     const res = await request({
-      url: '/api/orders/super',
+      url: '/orders/super',
       method: 'get',
       // 添加重试配置，提高请求成功率
       retry: 2,

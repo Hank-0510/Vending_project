@@ -38,3 +38,4 @@ const goHome = () => {
     margin-bottom: 30px;
   }
 }
+</style>

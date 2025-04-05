@@ -36,7 +36,7 @@
         <template #footer>
           <span class="dialog-footer">
             <el-button @click="dialogVisible = false">取消</el-button>
-            <el-button type="primary" @click="handleClose()">确定</el-button>
+            <el-button type="primary" @click="handleClose(() => {})">确定</el-button>
           </span>
         </template>
       </el-drawer>
@@ -56,20 +56,19 @@
       roleIdentification: [{ required: true, message: '请输入角色标识', trigger: 'blur' }],
     })
     const title = ref('新增菜单')
-    const ruleForm = reactive({
+    const ruleForm: { [key: string]: string | boolean | number } = reactive({
       serialNumber: '',
-merchantName: '',
-orderNumber: '',
-deviceQuantity: '',
-totalPrice: '',
-paymentMethod: '',
-paymentStatus: '',
-updateTime: '',
-machineNumber: '',
-cargoNumber: '',
-creationTime: '',
-orderSearch:''
-  
+    merchantName: '',
+    orderNumber: '',
+    deviceQuantity: '',
+    totalPrice: '',
+    paymentMethod: '',
+    paymentStatus: '',
+    updateTime: '',
+    machineNumber: '',
+    cargoNumber: '',
+    creationTime: '',
+    orderSearch:''
     })
 
  
@@ -104,9 +103,9 @@ orderSearch:''
     }
 
     const handleClose = async (done: () => void) => {
-      await ruleFormRef.value.validate((valid, fields) => {
+      await ruleFormRef.value?.validate((valid, fields) => {
         if (valid) {
-            const newDevice = { ...ruleForm } // 复制当前表单数据
+            const newDevice = { ...ruleForm } as typeof tableData.value[0]; // Ensure correct type
 
          // 获取当前时间，格式化为 "yyyy-MM-dd HH:mm:ss"
          const currentTime = new Date().toLocaleString('zh-CN', {
@@ -137,7 +136,7 @@ orderSearch:''
         // 编辑设备时，根据 deviceNumber 更新对应设备
         const index = tableData.value.findIndex(device => device.serialNumber === newDevice.serialNumber)
         if (index !== -1) {
-          tableData.value[index] = newDevice // 更新对应的设备
+          tableData.value[index] = newDevice as typeof tableData.value[0]; // 确保类型匹配
           ElMessage.success('编辑成功')
         } 
         else {

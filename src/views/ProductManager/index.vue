@@ -180,11 +180,12 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { fetchProducts, updateProduct, createProduct, deleteProduct, addProductsToMachine, removeProductsFromMachine } from '@/api/productManager'
 import { getMachineProducts } from '@/api/product' // 使用更健壮的API实现
+import type { Product, ApiResponse, ProductListResponse } from '@/types/product'
 
 // 商品列表数据
 const loading = ref(false)
-const products = ref([])
-const selectedProducts = ref([])
+const products = ref<Product[]>([])
+const selectedProducts = ref<Product[]>([])
 const hasSelectedProducts = computed(() => selectedProducts.value.length > 0)
 
 // 商品排序 - 按名称字母顺序
@@ -196,7 +197,7 @@ const sortedProducts = computed(() => {
 
 // 机器商品管理
 const machineId = ref('')
-const machineProducts = ref([])
+const machineProducts = ref<Product[]>([])
 const allMachineProductsSelected = ref(false)
 
 // 控制全选框的部分选中状态
@@ -208,7 +209,7 @@ const isIndeterminateState = computed(() => {
 })
 const machineProductsLoaded = ref(false)
 const isDeleteMode = ref(false)
-const productsToDelete = ref([])
+const productsToDelete = ref<number[]>([])
 
 // 机器商品选择状态
 const hasSelectedMachineProducts = computed(() => {
@@ -217,12 +218,13 @@ const hasSelectedMachineProducts = computed(() => {
 
 // 商品详情弹窗
 const productDetailVisible = ref(false)
-const currentProduct = ref(null)
+const currentProduct = ref<Product | null>(null)
 
 // 新建商品弹窗
 const createProductVisible = ref(false)
-const productFormRef = ref(null)
-const newProduct = reactive({
+const productFormRef = ref<any>(null)
+const newProduct = reactive<Product>({
+  id: 0,
   name: '',
   price: 0,
   stock: 0,
@@ -287,12 +289,12 @@ async function loadProducts() {
 }
 
 // 表格选择变化
-function handleSelectionChange(selection) {
+function handleSelectionChange(selection: Product[]) {
   selectedProducts.value = selection
 }
 
 // 打开商品详情
-function openProductDetail(product) {
+function openProductDetail(product: Product) {
   currentProduct.value = { ...product }
   productDetailVisible.value = true
 }
@@ -336,7 +338,7 @@ function openCreateProductDialog() {
 async function createNewProduct() {
   if (!productFormRef.value) return
   
-  await productFormRef.value.validate(async (valid) => {
+  await productFormRef.value.validate(async (valid: boolean) => {
     if (!valid) return
     
     try {
@@ -399,7 +401,7 @@ async function searchMachineProducts() {
           selected: false
         }))
       } else if (response.data.data && Array.isArray(response.data.data)) {
-        machineProducts.value = response.data.data.map(product => ({
+        machineProducts.value = response.data.data.map((product: Product) => ({
           ...product,
           selected: false
         }))
@@ -454,7 +456,7 @@ function handleMachineProductSelection() {
 }
 
 // 处理全选/取消全选
-function handleSelectAllMachineProducts(val) {
+function handleSelectAllMachineProducts(val: boolean) {
   // 将所有商品的选中状态设置为全选框的状态
   machineProducts.value.forEach(product => {
     product.selected = val

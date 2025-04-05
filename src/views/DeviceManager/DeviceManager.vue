@@ -78,7 +78,28 @@ import { getDeviceList, addDevice, updateDevice, deleteDevice } from '@/api/devi
 
 //表单数据来自mock
 // const tableData = ref(deviceData)
-const tableData = ref([])
+interface DeviceData {
+  id: number;
+  deviceNumber: string;
+  deviceModel: string;
+  deviceCardNumber: string;
+  deviceAddress: string;
+  deviceRemark: string;
+  price?: number;
+  commissionSharing?: string;
+  inventory?: number;
+  boundQrCode?: string;
+  deviceCapacity?: number;
+  stockThreshold?: number;
+  orderCode?: string;
+  boundPersonnel?: string;
+  enableStatus: string;
+  creationTime?: string;
+  advertisement?: string;
+  dispensingButton?: string;
+}
+
+const tableData = ref<DeviceData[]>([])
 const menuDrawer = ref()
 const menuDrawerRef = ref()
 const productDialogRef = ref()
@@ -113,7 +134,7 @@ const formInline = reactive<FormInline>({
 const fetchData = async () => {
   try {
     const { data } = await getDeviceList(formInline)
-    tableData.value = data
+    tableData.value = data as DeviceData[]
   } catch (error) {
     console.error('获取设备列表失败', error)
   }

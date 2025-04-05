@@ -57,7 +57,7 @@
       roleIdentification: [{ required: true, message: '请输入角色标识', trigger: 'blur' }],
     })
     const title = ref('新增菜单')
-    const ruleForm = reactive({
+    const ruleForm: { [key: string]: string | boolean | number } = reactive({
       serialNumber: '',
 merchantName: '',
 orderNumber: '',
@@ -105,7 +105,7 @@ orderSearch:''
     }
 
     const handleClose = async () => {
-      await ruleFormRef.value.validate(async (valid, fields) => {
+      await ruleFormRef.value?.validate(async (valid, fields) => {
         if (valid) {
           dialogVisible.value = false
           
@@ -115,9 +115,9 @@ orderSearch:''
               await updateOrder({
                 id: ruleForm.id,
                 // 转换前端字段到后端字段
-                user_id: ruleForm.merchantName.replace('User ', ''), // 从 "User X" 提取用户ID
-                machine_id: ruleForm.machineNumber.replace('MACH-', ''), // 从 "MACH-X" 提取机器ID
-                product_id: ruleForm.cargoNumber.replace('PROD-', ''), // 从 "PROD-X" 提取产品ID
+                user_id: String(ruleForm.merchantName).replace('User ', ''), // 从 "User X" 提取用户ID
+                machine_id: String(ruleForm.machineNumber).replace('MACH-', ''), // 从 "MACH-X" 提取机器ID
+                product_id: String(ruleForm.cargoNumber).replace('PROD-', ''), // 从 "PROD-X" 提取产品ID
                 quantity: Number(ruleForm.deviceQuantity),
                 total_price: Number(ruleForm.totalPrice),
                 status: ruleForm.paymentStatus

@@ -3,7 +3,7 @@ import request from '../utils/request'
 // 获取所有商品列表
 export function fetchProducts() {
   return request({
-    url: '/api/products/',
+    url: '/products/',
     method: 'get'
   })
 }
@@ -43,7 +43,7 @@ export function updateProduct(productId: number, productData: any) {
 // 创建新商品
 export function createProduct(productData: any) {
   return request({
-    url: '/api/products/',
+    url: '/products/',
     method: 'post',
     data: productData
   })

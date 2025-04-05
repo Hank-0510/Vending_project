@@ -78,7 +78,7 @@ const props = defineProps<{
 }>()
 
 const dialogVisible = ref(false)
-const productList = ref([])
+const productList = ref<any[]>([])
 const loading = ref(false)
 const retryCount = ref(0)
 const maxRetries = 3
@@ -106,7 +106,7 @@ const fetchProducts = async () => {
     const response = await Promise.race([
       getMachineProducts(props.machineId),
       timeoutPromise
-    ])
+    ]) as { data?: any }
     
     console.log(`[请求ID: ${requestId}] 收到API响应:`, response)
     
@@ -142,22 +142,23 @@ const fetchProducts = async () => {
         ElMessage.info('暂无商品数据，请稍后再试')
       }
     }
-  } catch (error) {
+  } catch (error: unknown) {
     console.error(`[请求ID: ${requestId}] 获取商品列表失败:`, error)
     
     // 记录更详细的错误信息
-    if (error.response) {
+    const err = error as any
+    if (err.response) {
       // 服务器返回了错误状态码
-      console.error(`[请求ID: ${requestId}] 服务器错误: ${error.response.status}`, error.response.data)
-    } else if (error.request) {
+      console.error(`[请求ID: ${requestId}] 服务器错误: ${err.response.status}`, err.response.data)
+    } else if (err.request) {
       // 请求已发送但没有收到响应
       console.error(`[请求ID: ${requestId}] 未收到服务器响应，可能是网络问题或服务器超时`)
-    } else if (error.message === '请求超时') {
+    } else if (err.message === '请求超时') {
       // 我们自己设置的超时
       console.error(`[请求ID: ${requestId}] 请求超时，超过30秒未收到响应`)
     } else {
       // 请求设置时发生错误
-      console.error(`[请求ID: ${requestId}] 请求错误: ${error.message}`)
+      console.error(`[请求ID: ${requestId}] 请求错误: ${err.message}`)
     }
     
     // 如果失败且未超过最大重试次数，则重试

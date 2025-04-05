@@ -1,13 +1,13 @@
 import request from '../utils/request'
 
 // 获取指定机器的商品列表
-export function getMachineProducts(machineId: number) {
+export function getMachineProducts(machineId: string | number) {
   // 添加时间戳和随机数参数，确保每次请求都是新的
   const timestamp = new Date().getTime()
   const randomStr = Math.random().toString(36).substring(2, 10)
   
   return request({
-    url: `/api/products/machine/${machineId}`,
+    url: `/products/machine/${machineId}`,
     method: 'get',
     params: {
       _t: timestamp, // 添加时间戳参数避免缓存

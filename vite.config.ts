@@ -40,8 +40,8 @@ export default defineConfig({
       '/api': {
         target: 'http://114.55.234.144:5000',
         changeOrigin: true,
-        // Keep the /api prefix in the path
-        // rewrite: (path) => path.replace(/^\/api/, ''),
+        // Remove the /api prefix to avoid double /api issues
+        rewrite: (path) => path.replace(/^\/api/, ''),
         timeout: 10000,
         headers: {
           Connection: 'keep-alive',
@@ -49,9 +49,9 @@ export default defineConfig({
           'Access-Control-Allow-Headers': 'Authorization, Content-Type'
         },
         ws: true,
-        onError: (err, req, res) => {
-          console.error('Proxy error:', err);
-        }
+        // onError: (err, req, res) => {
+        //   console.error('Proxy error:', err);
+        // }
       }
     }
   }

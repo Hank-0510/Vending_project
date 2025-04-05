@@ -132,9 +132,11 @@ const router = createRouter({
 })
 
 // 路由守卫
-import { useUserStore } from '@/stores/user'
+// 使用动态导入以避免循环依赖
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+  // 动态导入useUserStore以避免循环依赖
+  const { useUserStore } = await import('@/stores/user')
   const userStore = useUserStore()
   const localToken = localStorage.getItem('token')
   
